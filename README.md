@@ -5,5 +5,5 @@ Socket Project for Computer Communications Course
 | Name | E-Mail |
 | ------ | ------ |
 | Edmarck Sosa | [e.sosa@csu.fullerton.edu]|
-| Erick Alvarado | [Unknown]|
+| Erick Alvarado | [ealvarado007@csu.fullerton.edu]|
 | Justin Rameriz | [jusram624@csu.fullerton.edu]|
