@@ -86,7 +86,7 @@ def main():
                     f.write(data)
             charnum = str(os.stat(filename).st_size)
             print("File has been successfully recieved.")
-            print(f+" has been downloaded. The number of bytes downloaded was "+ charnum + ".")
+            print(filename +" has been downloaded. The number of bytes downloaded was "+ charnum + ".")
 
             #close items
             f.close()

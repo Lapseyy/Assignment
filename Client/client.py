@@ -35,7 +35,7 @@ def main():
             while True:
                 data = emphsock.recv(40).decode()
                 if data:
-                    if(data.startswith('ERROR')):
+                    if(data.startswith('ERROR 550')):
                         #if there is an error
                         print("File Transfer Failed")
                     else:
@@ -52,32 +52,33 @@ def main():
             emphsock.close()
 
         if choice == "put":
-            sock.send(bytes("put","utf-8"))
-            emphadr = int(sock.recv(40).decode())
-            #make ephemeral socket
-            emphsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-            emphsock.connect((host,emphadr))
-            #check if file exists
             files = os.listdir()
             
-            while file not in files:
+            if file not in files:
                 file = input("File was not found in your directory. Please enter correct file name.")
-            
-            #if it was in directory send file
-            emphsock.send(file.encode())
+           
+            else:
+                sock.send(bytes("put","utf-8"))
+                emphadr = int(sock.recv(40).decode())
+                #make ephemeral socket
+                emphsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+                emphsock.connect((host,emphadr))
+                #check if file exists
+                #if it was in directory send file
+                emphsock.send(file.encode())
 
-            f = open(file,"r")
+                f = open(file,"r")
 
-            try:
-                emphsock.sendall(f.read().encode())
-            except IOError:
-                print("Could not send file to server")
+                try:
+                    emphsock.sendall(f.read().encode())
+                except IOError:
+                    print("Could not send file to server")
+                    f.close()
+                    emphsock.close()
+
+                print(file+ " has been sent successfully. "+ str(os.stat(file).st_size) +" bytes have been sent.")
                 f.close()
                 emphsock.close()
-
-            print(file+ " has been sent successfully. "+ str(os.stat(file).st_size) +" bytes have been sent.")
-            f.close()
-            emphsock.close()
 
         if choice == "ls":
             sock.send(bytes('ls','utf-8'))
