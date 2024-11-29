@@ -1,0 +1,5 @@
+"Control channel lasts throughout the ftp session and is used to transfer all commands (ls, get, and put) from client to server and all status/error
+messages from server to client. The initial channel on which the client connects to serverwill be the
+control channel. Data channel is used for data transfer. It is established and torn down for every file
+transfer – when the client wants to transfer data (ls, get, or put), it generates an ephemeral port to use
+for connection and then wait for the server to connect to the client on that port."

@@ -1,12 +1,15 @@
 import socket
 import os.path
 import sys
+# from Client import client
 
 def main():
     host = "127.0.0.1"
+    # port to listen to 
     port = int(sys.argv[1])
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    sock.bind((host,port))    
+    sock.bind((host,port))
+    # start listening     
     sock.listen(5)
     print("Initializing client")
 
@@ -31,14 +34,15 @@ def main():
             emphconn, adr = emphsock.accept()
 
             filename = emphconn.recv(40).decode()
-
+            print(filename)
             #get content in directory
             content = os.listdir()
-            #if file not found
             if(filename not in content):
                 print("ERROR 550: No such file or directory")
+                error_message = "ERROR 550: No such file or directory"
+                emphconn.sendall(error_message.encode())  # Send error to client
                 emphconn.close()
-            #file is found
+
             else:
                 file = open(filename,"r")
                 try:
@@ -49,12 +53,13 @@ def main():
                     emphsock.close()
                     emphconn.close()
 
-            print("Data has successfully been sent.")
-            print(filename + " has been sent with " + str(os.stat(filename).st_size)+" bytes uploaded")
-            #close all open things
-            file.close()
-            emphconn.close()
-            emphsock.close()
+                print("Data has successfully been sent.")
+                print(filename + " has been sent with " + str(os.stat(filename).st_size)+" bytes uploaded")
+                #close all open things
+                file.close()
+                emphconn.close()
+                emphsock.close()
+                
 
         if cmnd == "put":
 

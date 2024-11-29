@@ -1,7 +1,7 @@
-import socket 
+import socket
 import os 
 import sys
-
+# from Server import server
 def main():
     host = sys.argv[1]
     port = int(sys.argv[2])
@@ -18,20 +18,22 @@ def main():
             file = cmnd[1]
         else:
             print("Please only insert a maximum of two prompts.")
-            choice = null, file =null
+            choice = null, file = null
 
         if choice == "get":
             sock.send(bytes("get","utf-8"))
-            #get ephemeral address
+            #get ephemeral address  
             emphadr = int(sock.recv(40).decode())
             #make ephemeral socket
             emphsock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
             emphsock.connect((host,emphadr))
             emphsock.send(file.encode())
+            
             f = open(file,"a")
             print("retrieving data")
             while True:
                 data = emphsock.recv(40).decode()
+                print(data)
                 if not data:
                     f.close
                     break
@@ -53,6 +55,7 @@ def main():
             emphsock.connect((host,emphadr))
             #check if file exists
             files = os.listdir()
+            
             while file not in files:
                 file = input("File was not found in your directory. Please enter correct file name.")
             
