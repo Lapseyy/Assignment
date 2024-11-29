@@ -29,22 +29,26 @@ def main():
             emphsock.connect((host,emphadr))
             emphsock.send(file.encode())
             
-            f = open(file,"a")
+            
             print("retrieving data")
+            data_recvd = []
             while True:
                 data = emphsock.recv(40).decode()
-                print(data)
-                if not data:
-                    f.close
-                    break
+                if data:
+                    if(data.startswith('ERROR')):
+                        #if there is an error
+                        print("File Transfer Failed")
+                    else:
+                        # hold data in the list
+                        data_recvd.append(data)
                 else:
-                    print("writing data")
-                    f.write(data)
-
-
-                print(file +" has been successfuly downloaded.\n" + str(os.stat(file).st_size) + " bytes have been downloaded.")
-
-            f.close()
+                    if data_recvd:
+                        f = open(file,"a")
+                        print("writing data")
+                        f.write("".join(data_recvd)) 
+                        f.close()
+                        print(file +" has been successfuly downloaded.\n" + str(os.stat(file).st_size) + " bytes have been downloaded.")
+                    break
             emphsock.close()
 
         if choice == "put":
