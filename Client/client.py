@@ -32,8 +32,12 @@ def main():
             
             print("retrieving data")
             data_recvd = []
+            #count = 1
             while True:
+                
                 data = emphsock.recv(40).decode()
+                # print("Run",count,data)
+                #count+=1
                 if data:
                     if(data.startswith('ERROR 550')):
                         #if there is an error

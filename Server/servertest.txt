@@ -1,1 +1,5 @@
-"I like banana."
+ as we learned in class,
+each socket also has a receive buffer. That buffer stores all arriving data that is ready to be
+retrieved by the application. recv() returns after emptying the receive buffer. Because
+the receive buffer may not contain all data sent by the sender when the recv() is called,
+recv() will return before having received the specified numberof bytes
